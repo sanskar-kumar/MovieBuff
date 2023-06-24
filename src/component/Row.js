@@ -20,7 +20,7 @@ const userId = localStorage.getItem("userId");
 const baseURL = "https://image.tmdb.org/t/p/original/";
 
 function Row({ title, fetchUrl, isLargeRow }) {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const [movies, setmovies] = useState([]);
   const [trailerUrl, setTrailerUrl] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
@@ -72,22 +72,26 @@ function Row({ title, fetchUrl, isLargeRow }) {
     }
   };
   const addToList = async (movie) => {
-    if(userId===null){
-      navigate('/login')
+    console.log(userId);
+    if (userId === null) {
+      navigate("/login");
+    } else {
+      try {
+        const docRef = await addDoc(collection(db, "myList"), {
+          userId: userId,
+          movie: movie,
+        });
+        console.log("Document written with ID: ", docRef.id);
+
+        setSnackBarOpen(true);
+      } catch (error) {
+        console.log("Error writing the data into My List");
+      }
     }
-    setOpen(false);
     // console.log("add to list clicked");
-    try {
-      const docRef = await addDoc(collection(db, "myList"), {
-        userId: userId,
-        movie: movie,
-      });
-      // console.log("Document written with ID: ", docRef.id);
-      setSnackBarOpen(true);
-    } catch (error) {
-      console.log("Error writing the data into My List");
-    }
+    setOpen(false);
   };
+
   const action = (
     <React.Fragment>
       <IconButton

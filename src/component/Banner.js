@@ -57,21 +57,25 @@ function Banner() {
     }
   };
   const addToList = async (movie) => {
-    if(userId===null){
-      navigate('/login')
+    if (userId === null) {
+      navigate("/login");
+    } else {
+      try {
+        const docRef = await addDoc(collection(db, "myList"), {
+          userId: userId,
+          movie: movie,
+        });
+        console.log("Document written with ID: ", docRef.id);
+
+        
+      } catch (error) {
+        console.log("Error writing the data into My List");
+      }
     }
-    setOpen(false);
+
     // console.log("add to list clicked");
-    try {
-      const docRef = await addDoc(collection(db, "myList"), {
-        userId: userId,
-        movie: movie,
-      });
-      // console.log("Document written with ID: ", docRef.id);
-      setSnackBarOpen(true);
-    } catch (error) {
-      console.log("Error writing the data into My List");
-    }
+    setSnackBarOpen(true);
+    setOpen(false);
   };
   const opts = {
     height: "390",
