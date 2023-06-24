@@ -57,6 +57,9 @@ function Banner() {
     }
   };
   const addToList = async (movie) => {
+    if(userId===null){
+      navigate('/login')
+    }
     setOpen(false);
     // console.log("add to list clicked");
     try {

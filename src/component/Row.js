@@ -14,11 +14,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DialogTitle } from "@mui/material";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const userId = localStorage.getItem("userId");
 const baseURL = "https://image.tmdb.org/t/p/original/";
 
 function Row({ title, fetchUrl, isLargeRow }) {
+  const navigate= useNavigate();
   const [movies, setmovies] = useState([]);
   const [trailerUrl, setTrailerUrl] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
@@ -70,6 +72,9 @@ function Row({ title, fetchUrl, isLargeRow }) {
     }
   };
   const addToList = async (movie) => {
+    if(userId===null){
+      navigate('/login')
+    }
     setOpen(false);
     // console.log("add to list clicked");
     try {
